@@ -1,4 +1,3 @@
-import datetime
 from deta import Deta
 
 DETA_KEY = "c06jtxtz2ux_7jT2qFf4QXAwpfTSwDqzfekgEv1S7JSN"

@@ -1,0 +1,64 @@
+#MainMenu {
+    visibility: hidden;
+}
+
+footer {
+    visibility: hidden;
+}
+
+header {
+    visibility: hidden;
+}
+
+div.css-82vsbp.e1tzin5v0 {
+    /* background-color: #eee ; */
+    border: 1px solid #dcdcdc !important;
+    /* padding: 20px 20px 20px 70px; */
+    padding: 5% 5% 5% 10%;
+    border-radius: 10px;
+}
+
+ul.nav.nav-pills.mb-auto.nav-justified {
+    position: sticky !important;
+    top: 10px !important;
+    z-index: 999 !important;
+}
+
+
+.card {
+    background-color: rgb(14, 17, 23);
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    /*text-align: center;*/
+}
+
+.card .title {
+    font-size: 20px;
+    color: #FF4B4B;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.card .content {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.card .content span {
+    color: #FF4B4B;
+}
+
+.card .edit-button {
+    background-color: #ffcc00;
+    color: #fff;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.card .edit-button:hover {
+    background-color: #ffbb00;
+}

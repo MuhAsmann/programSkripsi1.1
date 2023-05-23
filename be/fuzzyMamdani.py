@@ -151,6 +151,9 @@ def fuzzyMamdani(stock, total_penjualan, total_pendapatan):
     hasil_Prioritas = prioritas_jumlah.output['prioritas']
     hasil_jumlah = prioritas_jumlah.output['jumlah']
 
+    # print(hasil_Prioritas)
+    # print(hasil_jumlah)
+
     # Menampilkan hasil output
     # print('===============================================')
     # print('Masker Prioritas (0 - 10): ', prioritas_jumlah.output['prioritas'])
