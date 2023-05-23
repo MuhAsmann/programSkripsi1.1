@@ -387,195 +387,11 @@ if selected == "Data Masker":
 
                     st.markdown(card_html, unsafe_allow_html=True)
 
-                    # Fungsi untuk menghapus item
-                    # def delete_item(item_key):
-                    #     db.delete_data(item_key)
+                    # if st.button(f'Hapus', key=f'hapus-{merek}'):
+                    #     db.delete_data(key)
                     #     st.success(f'Data {merek} berhasil dihapus')
                     #     st.session_state.masker_data = [
-                    #         d for d in st.session_state.masker_data if d['key'] != item_key]
-
-                    # if st.button(f'Hapus', key=f'hapus-{merek}'):
-                    #     delete_item(key)
-
-                    if st.button(f'Hapus', key=f'hapus-{merek}'):
-                        db.delete_data(key)
-                        st.success(f'Data {merek} berhasil dihapus')
-                        st.session_state.masker_data = [
-                            d for d in st.session_state.masker_data if d['key'] != key]
-
-
-# if selected == "Data Masker":
-#     st.title('Data Barang')
-#     st.write('Isi Form Di Bawah Ini Jika Ingin Menambahkan Merek Baru')
-
-#     col1, col2 = st.columns(2)
-
-#     with col1:
-#         merek = st.text_input('Merek')
-
-#     with col2:
-#         stok_awal = st.number_input('Stok Awal', min_value=0, max_value=120)
-
-#     with col1:
-#         harga_awal = st.number_input('Harga Awal', min_value=0)
-
-#     with col2:
-#         keuntungan = st.number_input(
-#             'Keuntungan', min_value=0, max_value=14000)
-
-#     if st.button('Tambah Data'):
-#         try:
-#             db.insert_data(merek, stok_awal, harga_awal, keuntungan)
-#             st.success('Data berhasil ditambahkan')
-#         except ValueError as e:
-#             st.error(str(e))
-
-#     # edit data
-
-#     st.write('Pilih Data Dibawah Jika Ingin Di Edit')
-
-#     # dropdown merek
-#     merek_list = [item.get('merek') for item in db.fetch_data_masker()]
-#     # merek_list = [item.get('merek') for item in fetch_masker_data()]
-#     selected_merek = st.selectbox('Pilih merek', options=merek_list)
-
-#     # mengambil data masker yang dipilih
-#     selected_data = db.fetch_data_masker_by_merek(selected_merek)
-
-#     col3, col4 = st.columns(2)
-#     # mengisi form input dengan data masker yang dipilih
-#     with col3:
-#         edit_merek = st.text_input(
-#             'Merek', value=selected_data.get('merek', ""))
-#         harga_awal = st.number_input(
-#             'Edit Harga Awal', value=selected_data.get('harga_awal', 0))
-#     with col4:
-#         stok_awal = st.number_input('Stok Awal', value=selected_data.get(
-#             'stok_awal', 0), min_value=0, max_value=120)
-#         keuntungan = st.number_input('Keuntungan', value=selected_data.get(
-#             'keuntungan', 0), min_value=0, max_value=14000)
-
-#     if st.button('Simpan Perubahan'):
-#         try:
-#             # simpan data masker yang diedit
-#             db.edit_data(selected_data.get('key'), edit_merek,
-#                          stok_awal, harga_awal, keuntungan)
-#             st.success('Data berhasil diedit')
-
-#             # Update session state dengan data masker yang sudah diedit
-#             for i, masker in enumerate(st.session_state.masker_data):
-#                 if masker.get('key') == selected_data.get('key'):
-#                     st.session_state.masker_data[i]['merek'] = edit_merek
-#                     st.session_state.masker_data[i]['harga_awal'] = harga_awal
-#                     st.session_state.masker_data[i]['stok_awal'] = stok_awal
-#                     st.session_state.masker_data[i]['keuntungan'] = keuntungan
-#                     break
-#         except ValueError as e:
-#             st.error(str(e))
-#     # ================================================= akhir tampilan tambah dan edit
-#     # ================================================= 14
-
-#     # def show_masker_data(masker_data):
-#     #     st.write('Daftar Masker')
-
-#     #     # Mengatur jumlah kolom yang diinginkan
-#     #     num_cols = 3
-#     #     cols = st.beta_columns(num_cols)
-
-#     #     # Menghitung jumlah card yang akan ditampilkan pada setiap kolom
-#     #     num_items_per_col = (len(masker_data) // num_cols) + 1
-
-#     #     for i in range(num_cols):
-#     #         with cols[i]:
-#     #             for j in range(i*num_items_per_col, min((i+1)*num_items_per_col, len(masker_data))):
-#     #                 item = masker_data[j]
-#     #                 key = item.get('key')
-#     #                 merek = item.get('merek')
-#     #                 stok_awal = item.get('stok_awal')
-#     #                 harga_awal = item.get('harga_awal')
-#     #                 keuntungan = item.get('keuntungan')
-#     #                 harga_jual = item.get('harga_jual')
-
-#     #                 # Tambahkan border pada kontainer kartu
-#     #                 with st.beta_container():
-#     #                     st.write(
-#     #                         f'<style>.card {{border: 1px solid #ccc; border-radius: 5px; padding: 10px;}}</style>', unsafe_allow_html=True)
-#     #                     st.write(f"<div class='card'>")
-#     #                     st.write(f"## {merek}")
-#     #                     st.write(f"Stok awal: {stok_awal}")
-#     #                     st.write(f"Harga awal: {harga_awal}")
-#     #                     st.write(f"Keuntungan: {keuntungan}")
-#     #                     st.write(f"Harga jual: {harga_jual}")
-#     #                     if st.button(f'Hapus', key=f'hapus-{merek}'):
-#     #                         db.delete_data(key)
-#     #                         st.success(f'Data {merek} berhasil dihapus')
-#     #                         # Menghapus data dari cache setelah dihapus dari database
-#     #                         masker_data.pop(j)
-#     #                     st.write("</div>")
-
-#     # # Membatasi jumlah data yang ditampilkan pada setiap halaman menjadi 9
-#     # PAGE_SIZE = 9
-
-#     # # Mengambil data masker dengan caching
-#     # masker_data = fetch_masker_data()
-
-#     # # Membagi data menjadi beberapa halaman dengan teknik lazy loading
-#     # num_pages = (len(masker_data) // PAGE_SIZE) + 1
-#     # page_number = st.sidebar.number_input(
-#     #     'Halaman', min_value=1, max_value=num_pages, value=1, step=1)
-#     # start_idx = (page_number - 1) * PAGE_SIZE
-#     # end_idx = start_idx + PAGE_SIZE
-#     # masker_data = masker_data[start_idx:end_idx]
-
-#     # # Menampilkan data masker pada halaman yang dipilih
-#     # show_masker_data(masker_data)
-
-#     # # Menambahkan fitur pagination
-#     # st_pagination(masker_data, page_number, num_pages, PAGE_SIZE)
-#     # ================================================= 13
-
-#     with st.form(key='search_masker'):
-#         search_input = st.text_input('Cari masker')
-#         search_button = st.form_submit_button('Cari')
-
-#     # Menampilkan data dalam bentuk card
-#     st.write('Daftar Masker')
-
-#     # Mengatur jumlah kolom yang diinginkan
-#     num_cols = 2
-#     cols = st.columns(num_cols)
-
-#     # Menghitung jumlah card yang akan ditampilkan pada setiap kolom
-#     num_items_per_col = (len(st.session_state.masker_data) // num_cols) + 1
-
-#     for i in range(num_cols):
-#         with cols[i]:
-#             for j in range(i*num_items_per_col, min((i+1)*num_items_per_col, len(st.session_state.masker_data))):
-#                 item = st.session_state.masker_data[j]
-#                 key = item.get('key')
-#                 merek = item.get('merek')
-#                 stok_awal = item.get('stok_awal')
-#                 harga_awal = item.get('harga_awal')
-#                 keuntungan = item.get('keuntungan')
-#                 harga_jual = item.get('harga_jual')
-
-#                 # Filter data berdasarkan input pencarian
-#                 if search_input and search_input.lower() not in merek.lower():
-#                     continue
-
-#                 with st.container():
-#                     st.write(f"## {merek}")
-#                     st.write(f"Stok awal: {stok_awal}")
-#                     st.write(f"Harga awal: {harga_awal}")
-#                     st.write(f"Keuntungan: {keuntungan}")
-#                     st.write(f"Harga jual: {harga_jual}")
-#                     if st.button(f'Hapus', key=f'hapus-{merek}'):
-#                         db.delete_data(key)
-#                         st.success(f'Data {merek} berhasil dihapus')
-#                         # Menghapus data dari session state setelah dihapus dari database
-#                         st.session_state.masker_data = [
-#                             d for d in st.session_state.masker_data if d['key'] != key]
-    # ================================================= 12
+                    #         d for d in st.session_state.masker_data if d['key'] != key]
 
 
 if selected == "Rekomendasi":
@@ -590,14 +406,14 @@ if selected == "Rekomendasi":
                               db.fetch_all_tanggal_upload())
         submitted = st.form_submit_button(
             "Dapatkan Rekomendasi")
-        deleted = st.form_submit_button(
-            "Hapus Data")
-        if deleted:
-            with st.spinner("Sedang Menghapus Data"):
-                db.delete_data_by_date(period)
-                st.success(
-                    f"All data for upload date {period} has been deleted.")
-                st.session_state["list_data"] = []
+        # deleted = st.form_submit_button(
+        #     "Hapus Data")
+        # if deleted:
+        #     with st.spinner("Sedang Menghapus Data"):
+        #         db.delete_data_by_date(period)
+        #         st.success(
+        #             f"All data for upload date {period} has been deleted.")
+        #         st.session_state["list_data"] = []
         if submitted:
             with st.spinner("Sedang menghitung, pastikan jangan keluar dari tab ini..."):
                 # pertama
@@ -626,17 +442,6 @@ if selected == "Rekomendasi":
 
                 st.session_state["list_data"] = sorted_data
 
-                # # Tampilkan data hasil fuzzy Mamdani
-                # st.write("Hasil rekomendasi: ")
-
-                # # Tampilkan data dalam bentuk list
-                # for i, record in enumerate(sorted_data):
-                #     no = i+1
-                #     merek = record['merek']
-                #     quantity = record['quantity']
-                #     priority = record['priority']
-                #     st.write(
-                #         f"{no}. | {merek} | {quantity:.0f} | {priority:.2f}")
     # Tampilkan data dalam bentuk list
     if st.session_state["list_data"]:
         st.write("Hasil rekomendasi: ")
