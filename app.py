@@ -1,16 +1,15 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import hydralit_components as hc
 
 from datetime import datetime
 import time
 import openpyxl
 
 import pandas as pd
-from deta import Deta
 
 from be import db_functions as db
 from be import fuzzyMamdani as fz
+from be import fuzzyInference as mamdani
 # import fuzzyMamdani as fz
 
 import math
@@ -178,22 +177,6 @@ if selected == "Upload Data":
     file_download_link(file_path, file_name)
 
     with st.form("entry_from"):
-        # data = st.file_uploader(
-        #     "Upload File Excel Sesuai Dengan Tamplate", type=["xlsx"])
-
-        # if data:
-        #     # Buka file Excel dengan openpyxl
-        #     wb = openpyxl.load_workbook(data)
-        #     # Cek apakah sheet "Hasil" ada dalam file Excel
-        #     if "Transaksi" not in wb.sheetnames:
-        #         data = "Salah"
-        #     else:
-        #         # Tampilkan tampilan loading ketika file di-upload
-        #         with st.spinner("Uploading file..."):
-        #             df = pd.read_excel(data, sheet_name="Transaksi")
-        #             time.sleep(2)
-
-        # submitted = st.form_submit_button("Simpan Data")
 
         data = st.file_uploader(
             "Upload File Excel Sesuai Dengan Template", type=["xlsx"])
@@ -331,33 +314,6 @@ if selected == "Data Masker":
     with st.spinner('Sedang memuat...'):
         time.sleep(1)  # Contoh penundaan simulasi loading data
 
-        # for i in range(num_cols):
-        #     with cols[i]:
-        #         for j in range(i*num_items_per_col, min((i+1)*num_items_per_col, len(st.session_state.masker_data))):
-        #             item = st.session_state.masker_data[j]
-        #             key = item.get('key')
-        #             merek = item.get('merek')
-        #             stok_awal = item.get('stok_awal')
-        #             harga_awal = item.get('harga_awal')
-        #             keuntungan = item.get('keuntungan')
-        #             harga_jual = item.get('harga_jual')
-
-        #             # Filter data berdasarkan input pencarian
-        #             if search_input and search_input.lower() not in merek.lower():
-        #                 continue
-
-        #             with st.container():
-        #                 st.write(f"## {merek}")
-        #                 st.write(f"Stok awal: {stok_awal}")
-        #                 st.write(f"Harga awal: {harga_awal}")
-        #                 st.write(f"Keuntungan: {keuntungan}")
-        #                 st.write(f"Harga jual: {harga_jual}")
-        #                 if st.button(f'Hapus', key=f'hapus-{merek}'):
-        #                     db.delete_data(key)
-        #                     st.success(f'Data {merek} berhasil dihapus')
-        #                     # Menghapus data dari session state setelah dihapus dari database
-        #                     st.session_state.masker_data = [
-        #                         d for d in st.session_state.masker_data if d['key'] != key]
         for i in range(num_cols):
             with cols[i]:
                 for j in range(i * num_items_per_col, min((i + 1) * num_items_per_col, len(st.session_state.masker_data))):
@@ -430,7 +386,7 @@ if selected == "Rekomendasi":
                     # kedua
                     total_pendapatan = record['keuntungan']
 
-                    priority, quantity = fz.fuzzyMamdani(
+                    priority, quantity = mamdani.fuzzy_inference(
                         stock, total_penjualan, total_pendapatan)
 
                     record['priority'] = priority
