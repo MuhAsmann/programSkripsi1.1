@@ -356,7 +356,6 @@ if selected == "Rekomendasi":
     if "list_data" not in st.session_state:
         st.session_state["list_data"] = []
 
-    st.header(f"Hasil Rekomendasi")
     with st.form("saved_periods"):
         period = st.selectbox("Select Waktu Upload :",
                               db.fetch_all_tanggal_upload())
@@ -400,14 +399,32 @@ if selected == "Rekomendasi":
 
     # Tampilkan data dalam bentuk list
     if st.session_state["list_data"]:
-        st.write("Hasil rekomendasi: ")
+        st.header(f"Hasil Rekomendasi")
         sorted_data = st.session_state["list_data"]
+
+        # num_cols = 2
+        # cols = st.columns(num_cols)
+
+        # # Menghitung jumlah card yang akan ditampilkan pada setiap kolom
+        # num_items_per_col = (len(st.session_state.masker_data) // num_cols) + 1
+
         for i, record in enumerate(sorted_data):
             no = i+1
             merek = record['merek']
             quantity = record['quantity']
             priority = record['priority']
-            st.write(f"{no}. | {merek} | {quantity:.0f} | {priority:.2f}")
+
+            card_html = f'''
+                    <div class="card">
+                        <div class="title">{no}. {merek}</div>
+                        <div class="content">Quantity: <span>{quantity}</span></div>
+                        <div class="content">Priority: <span>{priority:.2f}</span></div>
+                    </div>
+                    '''
+
+            st.markdown(card_html, unsafe_allow_html=True)
+
+            # st.write(f"{no}. | {merek} | {quantity:.0f} | {priority:.2f}")
 
 if selected == "Logout":
     st.header(f"Tampilan Logout")

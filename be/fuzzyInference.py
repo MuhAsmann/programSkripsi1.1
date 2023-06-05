@@ -346,8 +346,6 @@ def fuzzy_inference(stok, penjualan, pendapatan):
     prioritas_output['sangat tinggi'] = [
         maksimum_st] if maksimum_st is not None else []
 
-    print("Prioritas sesudah:", prioritas_output)
-
     derajat_keanggotaan_prioritas = {
         'sangat rendah': [0, 0, 2],
         'rendah': [0, 2, 4],
@@ -391,8 +389,6 @@ def fuzzy_inference(stok, penjualan, pendapatan):
                                         sample2) * derajat_keanggotaan
             denominator_sum_kuantitas += 2 * derajat_keanggotaan
 
-    # defuzzification_prioritas = numerator_sum_prioritas / denominator_sum_prioritas
-    # defuzzification_kuantitas = numerator_sum_kuantitas / denominator_sum_kuantitas
     defuzzification_prioritas = 0
     defuzzification_kuantitas = 0
 
