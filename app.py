@@ -271,6 +271,16 @@ if authentication_status:
                 try:
                     db.insert_data(merek, stok_awal, harga_awal, keuntungan)
                     st.success('Data berhasil ditambahkan')
+
+                    # Update session state dengan data masker yang baru ditambahkan
+                    new_masker = {
+                        'merek': merek,
+                        'stok_awal': stok_awal,
+                        'harga_awal': harga_awal,
+                        'keuntungan': keuntungan
+                    }
+                    st.session_state.masker_data.append(new_masker)
+
                 except ValueError as e:
                     st.error(str(e))
 
@@ -446,4 +456,5 @@ if authentication_status:
                 # st.write(f"{no}. | {merek} | {quantity:.0f} | {priority:.2f}")
 
     if selected == "Logout":
+        st.warning('Yakin Ingin Keluar ?', icon="⚠️")
         authenticator.logout("Logout", "main")
