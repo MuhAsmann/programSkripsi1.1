@@ -1,12 +1,50 @@
-from deta import Deta
+import os
 
-DETA_KEY = "c06jtxtz2ux_7jT2qFf4QXAwpfTSwDqzfekgEv1S7JSN"
+from deta import Deta
+from dotenv import load_dotenv
+
+load_dotenv(".env")
+
+
+DETA_KEY = os.getenv("DETA_KEY")
 
 
 deta = Deta(DETA_KEY)
 
 db_transaksi = deta.Base("dataTransaksi")
 db_data_masker = deta.Base("dataMasker")
+db_user = deta.Base("user")
+
+
+# =============================== login
+
+
+def insert_user(username, name, password):
+    """Returns the user on a successful user creation, otherwise raises and error"""
+    return db_user.put({"key": username, "name": name, "password": password})
+
+
+def fetch_all_users():
+    """Returns a dict of all users"""
+    res = db_user.fetch()
+    return res.items
+
+
+# print(fetch_all_users())
+
+def get_user(username):
+    """If not found, the function will return none"""
+    return db_user.get(username)
+
+
+def update_user(username, updates):
+    """If the item is updated, returns None. Otherwise, an exception is raised"""
+    return db_user.update(updates, username)
+
+
+def delete_user(username):
+    """Always returns None, even if the key does not exist"""
+    return db_user.delete(username)
 
 
 # ======================================= upload produk
