@@ -9,7 +9,7 @@ import openpyxl
 import pandas as pd
 
 from be import db_functions as db
-from be import fuzzyMamdani as fz
+# from be import fuzzyMamdani as fz
 from be import fuzzyInference as mamdani
 
 import math

@@ -1,12 +1,13 @@
 import os
 
 from deta import Deta
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv(".env")
+# load_dotenv(".env")
 
 
-DETA_KEY = os.getenv("DETA_KEY")
+# DETA_KEY = os.getenv("DETA_KEY")
+DETA_KEY = os.environ("DETA_KEY")
 
 
 deta = Deta(DETA_KEY)
