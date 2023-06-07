@@ -7,7 +7,7 @@ from deta import Deta
 
 
 # DETA_KEY = os.getenv("DETA_KEY")
-DETA_KEY = os.environ("DETA_KEY")
+DETA_KEY = os.environ["DETA_KEY"]
 
 
 deta = Deta(DETA_KEY)
