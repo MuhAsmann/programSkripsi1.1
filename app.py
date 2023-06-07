@@ -400,42 +400,49 @@ if authentication_status:
             #         st.session_state["list_data"] = []
             if submitted:
                 with st.spinner("Sedang menghitung, pastikan jangan keluar dari tab ini..."):
-                    # pertama
-                    # period_data = db.fetch_periods_by_date(period)
-                    # kedua
-                    period_data = db.merge_data(period)
 
-                    for record in period_data:
-                        # stock = record['stock']
-                        stock = record['stok']
-                        total_penjualan = record['total_penjualan']
-                        # pertama
-                        # total_pendapatan = record['total_pendapatan']
-                        # kedua
-                        total_pendapatan = record['keuntungan']
+                    # Lakukan Pengecekan Pada Database
+                    # jika true tampilkan list data Jika False Lakukan Perhitungan Lalu Masukkan kedatabase
 
-                        priority, quantity = mamdani.fuzzy_inference(
-                            stock, total_penjualan, total_pendapatan)
+                    dataHasil = db.cekHasil(period)
 
-                        record['priority'] = priority
-                        # membulatkan nilai quantity ke atas
-                        record['quantity'] = math.ceil(quantity)
+                    if dataHasil:
+                        sorted_data = sorted(
+                            dataHasil, key=lambda x: x['priority'], reverse=True)
 
-                    sorted_data = sorted(
-                        period_data, key=lambda x: x['priority'], reverse=True)
+                        st.session_state["list_data"] = sorted_data
+                    else:
+                        period_data = db.merge_data(period)
 
-                    st.session_state["list_data"] = sorted_data
+                        for record in period_data:
+                            stock = record['stok']
+                            total_penjualan = record['total_penjualan']
+                            total_pendapatan = record['keuntungan']
+
+                            priority, quantity = mamdani.fuzzy_inference(
+                                stock, total_penjualan, total_pendapatan)
+
+                            record['priority'] = priority
+                            # membulatkan nilai quantity ke atas
+                            record['quantity'] = math.ceil(quantity)
+                            # Simpan data ke database Deta.sh
+                            data = {
+                                'merek': record['merek'],
+                                'quantity': record['quantity'],
+                                'priority': record['priority'],
+                                'tanggal_upload': period
+                            }
+                            db.inputHasil(data)
+
+                        sorted_data = sorted(
+                            period_data, key=lambda x: x['priority'], reverse=True)
+
+                        st.session_state["list_data"] = sorted_data
 
         # Tampilkan data dalam bentuk list
         if st.session_state["list_data"]:
             st.header(f"Hasil Rekomendasi")
             sorted_data = st.session_state["list_data"]
-
-            # num_cols = 2
-            # cols = st.columns(num_cols)
-
-            # # Menghitung jumlah card yang akan ditampilkan pada setiap kolom
-            # num_items_per_col = (len(st.session_state.masker_data) // num_cols) + 1
 
             for i, record in enumerate(sorted_data):
                 no = i+1

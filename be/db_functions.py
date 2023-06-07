@@ -14,6 +14,7 @@ deta = Deta(DETA_KEY)
 db_transaksi = deta.Base("dataTransaksi")
 db_data_masker = deta.Base("dataMasker")
 db_user = deta.Base("user")
+db_hasil = deta.Base("dataHasil")
 
 
 # =============================== login
@@ -168,3 +169,17 @@ def update_data(key, merek, stok_awal, harga_awal, keuntungan):
 
 def delete_data(key):
     return db_data_masker.delete(key)
+
+
+#  ============================== Hasil Perhitungan
+def inputHasil(hasil):
+    return db_hasil.put(hasil)
+
+
+def cekHasil(period):
+    existing_data = db_hasil.fetch({"tanggal_upload": period}).items
+
+    if existing_data:
+        return existing_data
+    else:
+        return 0
