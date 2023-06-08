@@ -11,27 +11,27 @@ def trimf(x, a, b, c):
 
 def stok_membership(x):
     return {
-        'sedikit': trimf(x, 0, 0, 50),
+        'sedikit': trimf(x, 0, 25, 50),
         'cukup': trimf(x, 30, 60, 90),
-        'banyak': trimf(x, 70, 120, 120)
+        'banyak': trimf(x, 70, 95, 120)
     }
 
 
 def penjualan_membership(x):
     return {
-        'sedikit': trimf(x, 0, 0, 50),
+        'sedikit': trimf(x, 0, 25, 50),
         'sedang': trimf(x, 30, 60, 90),
-        'banyak': trimf(x, 70, 120, 120)
+        'banyak': trimf(x, 70, 95, 120)
     }
 
 
 def pendapatan_membership(x):
     return {
-        'sangat rendah': trimf(x, 0, 0, 450000),
-        'rendah': trimf(x, 50000, 450000, 850000),
-        'sedang': trimf(x, 450000, 850000, 1250000),
-        'tinggi': trimf(x, 850000, 1250000, 1650000),
-        'sangat tinggi': trimf(x, 1250000, 1700000, 1700000)
+        'sangat rendah': trimf(x, 0, 225000, 450000),
+        'rendah': trimf(x, 200000, 500000, 800000),
+        'sedang': trimf(x, 500000, 850000, 1200000),
+        'tinggi': trimf(x, 900000, 1200000, 1500000),
+        'sangat tinggi': trimf(x, 1250000, 1470000, 1700000)
     }
 
 
@@ -347,17 +347,17 @@ def fuzzy_inference(stok, penjualan, pendapatan):
         maksimum_st] if maksimum_st is not None else []
 
     derajat_keanggotaan_prioritas = {
-        'sangat rendah': [0, 0, 2],
-        'rendah': [0, 2, 4],
-        'sedang': [2, 4, 6],
-        'tinggi': [4, 6, 8],
-        'sangat tinggi': [6, 8, 10]
+        'sangat rendah': [0, 1.5, 3],
+        'rendah': [1, 3, 5],
+        'sedang': [3, 5, 7],
+        'tinggi': [5, 7, 9],
+        'sangat tinggi': [7, 8.5, 10]
     }
 
     derajat_keanggotaan_kuantitas = {
-        'sedikit': [0, 0, 50],
+        'sedikit': [0, 25, 50],
         'sedang': [30, 60, 90],
-        'banyak': [70, 120, 120]
+        'banyak': [70, 95, 120]
     }
 
     total_sample_prioritas = 0
