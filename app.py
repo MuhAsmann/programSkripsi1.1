@@ -9,7 +9,6 @@ import openpyxl
 import pandas as pd
 
 from be import db_functions as db
-# from be import fuzzyMamdani as fz
 from be import fuzzyInference as mamdani
 
 import math
@@ -18,7 +17,6 @@ import math
 page_title = "Rekomendasi Merek Masker"
 page_icon = ":money_with_wings:"
 layout = "wide"
-# layout = "centered"
 
 file_path = 'tamplate.xlsx'
 
@@ -26,31 +24,6 @@ file_path = 'tamplate.xlsx'
 st.set_page_config(page_title=page_title,
                    page_icon=page_icon, layout=layout, initial_sidebar_state='collapsed')
 
-# ===================== navbar mengunakan hydralit
-
-# menu_data = [
-#     {'icon': "far fa-copy", 'label': "Data Masker"},
-#     {'id': 'Rekomendasi', 'icon': "🐙", 'label': "Rekomendasi"},
-# ]
-
-# over_theme = {'txc_inactive': '#FFFFFF'}
-# menu_id = hc.nav_bar(
-#     menu_definition=menu_data,
-#     override_theme=over_theme,
-#     home_name='Upload Data',
-#     login_name='Logout',
-#     # will show the st hamburger as well as the navbar now!
-#     hide_streamlit_markers=True,
-#     sticky_nav=True,  # at the top or not
-#     sticky_mode='sticky',  # jumpy or not-jumpy, but sticky or pinned
-# )
-
-# ================= Akhir Navbar Hydralit
-
-# ================== Style
-
-# with open('style.py') as style:
-#     st.markdown(f'<style>{style.read}</style>', unsafe_allow_html=True)
 
 # --- HIDE STREAMLIT STYLE ---
 hide_st_style = """
@@ -114,22 +87,6 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # ================================================ akhir style
 
 
-# =========== Navbar Menggunakan Streamlit_option_menu
-# --- NAVIGATION MENU ---
-# NOTE : Terdapat bug tidak bisa menggunakan posisi sticky ketika orientation horizontal dan tidak didalam st.sidebar
-# selected = option_menu(
-#     menu_title=None,
-#     options=["Upload Data", "Data Masker", "Rekomendasi"],
-#     # https://icons.getbootstrap.com/
-#     icons=["pencil-fill", "pencil-fill", "bar-chart-fill"],
-#     orientation="horizontal",
-#     styles={
-#         "container": {"position": "sticky !important"}
-#     }
-# )
-
-# ========================= Login
-
 users = db.fetch_all_users()
 
 usernames = [user["key"] for user in users]
@@ -182,7 +139,6 @@ if authentication_status:
 
     # input data
     if selected == "Upload Data":
-        # if menu_id == "Upload Data":
         st.header(f"Upload File")
 
         def file_download_link(file_path, file_name):
@@ -235,7 +191,6 @@ if authentication_status:
                     with st.spinner("Menyimpan Data, Harap Bersabar..."):
                         # Tambahkan kolom tanggal upload
                         df["tanggal_upload"] = datetime.now().strftime(
-                            # "%Y-%m-%d")
                             "%Y-%m-%d %H:%M:%S")
                         # Push data ke database
                         for index, row in df.iterrows():
@@ -245,7 +200,6 @@ if authentication_status:
                     st.success("Data berhasil diupload ke database Deta.sh")
 
     if selected == "Data Masker":
-        # if menu_id == "Data Masker":
         st.title('Data Barang')
         st.write('Isi Form Di Bawah Ini Jika Ingin Menambahkan Merek Baru')
 
@@ -380,7 +334,6 @@ if authentication_status:
                         #         d for d in st.session_state.masker_data if d['key'] != key]
 
     if selected == "Rekomendasi":
-        # if menu_id == "Rekomendasi":
         # Inisialisasi state
         if "list_data" not in st.session_state:
             st.session_state["list_data"] = []
@@ -400,9 +353,6 @@ if authentication_status:
             #         st.session_state["list_data"] = []
             if submitted:
                 with st.spinner("Sedang menghitung, pastikan jangan keluar dari tab ini..."):
-
-                    # Lakukan Pengecekan Pada Database
-                    # jika true tampilkan list data Jika False Lakukan Perhitungan Lalu Masukkan kedatabase
 
                     dataHasil = db.cekHasil(period)
 
@@ -459,8 +409,6 @@ if authentication_status:
                         '''
 
                 st.markdown(card_html, unsafe_allow_html=True)
-
-                # st.write(f"{no}. | {merek} | {quantity:.0f} | {priority:.2f}")
 
     if selected == "Logout":
         st.warning('Yakin Ingin Keluar ?', icon="⚠️")
