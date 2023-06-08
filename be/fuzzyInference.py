@@ -346,6 +346,17 @@ def fuzzy_inference(stok, penjualan, pendapatan):
     prioritas_output['sangat tinggi'] = [
         maksimum_st] if maksimum_st is not None else []
 
+    maksimum_sd = max(jumlah_output['sedikit']
+                      ) if jumlah_output['sedikit'] else None
+    maksimum_sg = max(jumlah_output['sedang']
+                      ) if jumlah_output['sedang'] else None
+    maksimum_b = max(jumlah_output['banyak']
+                     ) if jumlah_output['banyak'] else None
+
+    jumlah_output['sedikit'] = [maksimum_sd] if maksimum_sd is not None else []
+    jumlah_output['sedang'] = [maksimum_sg] if maksimum_sg is not None else []
+    jumlah_output['banyak'] = [maksimum_b] if maksimum_b is not None else []
+
     derajat_keanggotaan_prioritas = {
         'sangat rendah': [0, 1.5, 3],
         'rendah': [1, 3, 5],
