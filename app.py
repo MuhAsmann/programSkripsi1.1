@@ -333,7 +333,7 @@ if authentication_status:
                         #     st.session_state.masker_data = [
                         #         d for d in st.session_state.masker_data if d['key'] != key]
 
-    if selected == "Rekomendasi":
+    if selected == "Prediksi":
         # Inisialisasi state
         if "list_data" not in st.session_state:
             st.session_state["list_data"] = []
