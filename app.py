@@ -14,7 +14,7 @@ from be import fuzzyInference as mamdani
 import math
 
 
-page_title = "Rekomendasi Merek Masker"
+page_title = "Prediksi Stok Masker"
 page_icon = ":money_with_wings:"
 layout = "wide"
 
@@ -109,9 +109,9 @@ if authentication_status == None:
 if authentication_status:
     with st.sidebar:
         selected = option_menu(
-            menu_title='Sistem Rekomendasi',
+            menu_title='Sistem Prediksi',
             options=["Dashboard", "Upload Data",
-                     "Data Masker", "Rekomendasi", "Logout"],
+                     "Data Masker", "Prediksi", "Logout"],
             # https://icons.getbootstrap.com/
             icons=["bi-house-door-fill", "bi-cloud-upload-fill  ", "pencil-fill",
                    "bar-chart-fill", "bi-box-arrow-left"]
@@ -129,13 +129,13 @@ if authentication_status:
 
     if selected == "Dashboard":
         st.title("Penggunaan Sistem")
-        st.write("Selamat datang di sistem kami!")
+        st.write("Selamat datang di sistem prediksi stok masker!")
         st.write("Berikut adalah langkah-langkah penggunaan sistem:")
         st.markdown(
             "1. User perlu mengedit data stok pada halaman **Data Masker** setelah melakukan pembelian stok.")
-        st.markdown("2. Untuk mendapatkan rekomendasi, user perlu mengupload data penjualan selama 2 minggu terakhir pada halaman **Upload Data Penjualan** sesuai dengan template yang ada.")
+        st.markdown("2. Untuk mendapatkan rekomendasi, user perlu mengupload data penjualan selama 2 minggu terakhir pada halaman **Upload Data Penjualan** sesuai dengan template yang ada. Dan Pastikan Nama Merek Sama Dengan Yang Ada Pada Halaman Data Masker")
         st.markdown(
-            "3. Setelah melakukan upload, user dapat masuk ke halaman **Rekomendasi** dan memilih tanggal upload untuk mendapatkan rekomendasi.")
+            "3. Setelah melakukan upload, user dapat masuk ke halaman **Rekomendasi** dan memilih tanggal upload untuk mendapatkan prediksi.")
 
     # input data
     if selected == "Upload Data":
@@ -342,7 +342,7 @@ if authentication_status:
             period = st.selectbox("Select Waktu Upload :",
                                   db.fetch_all_tanggal_upload())
             submitted = st.form_submit_button(
-                "Dapatkan Rekomendasi")
+                "Dapatkan Prediksi")
             # deleted = st.form_submit_button(
             #     "Hapus Data")
             # if deleted:
@@ -391,7 +391,7 @@ if authentication_status:
 
         # Tampilkan data dalam bentuk list
         if st.session_state["list_data"]:
-            st.header(f"Hasil Rekomendasi")
+            st.header(f"Hasil Prediksi")
             sorted_data = st.session_state["list_data"]
 
             for i, record in enumerate(sorted_data):
