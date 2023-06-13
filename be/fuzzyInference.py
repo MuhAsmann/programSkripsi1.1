@@ -184,7 +184,7 @@ def fuzzy_inference(stok, penjualan, pendapatan):
 
     # Rule 19
     if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 0 <= pendapatan <= 200000:
-        prioritas_output['sangatrendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
             float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
         jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
             float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
