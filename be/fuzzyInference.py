@@ -9,6 +9,17 @@ def trimf(x, a, b, c):
         return 0
 
 
+def trapmf(x, a, b, c, d):
+    if x <= a or x >= d:
+        return 0
+    elif a <= x <= b:
+        return (x - a) / (b - a)
+    elif b <= x <= c:
+        return 1
+    elif c <= x <= d:
+        return (d - x) / (d - c)
+
+
 def stok_membership(x):
     return {
         'sedikit': trimf(x, 0, 25, 50),
@@ -27,11 +38,9 @@ def penjualan_membership(x):
 
 def pendapatan_membership(x):
     return {
-        'sangat rendah': trimf(x, 0, 225000, 450000),
-        'rendah': trimf(x, 200000, 500000, 800000),
-        'sedang': trimf(x, 500000, 850000, 1200000),
-        'tinggi': trimf(x, 900000, 1200000, 1500000),
-        'sangat tinggi': trimf(x, 1250000, 1470000, 1700000)
+        'rendah': trapmf(x, 0, 0, 100000, 200000),
+        'sedang': trimf(x, 150000, 300000, 450000),
+        'tinggi': trapmf(x, 300000, 600000, 1700000, 1700000)
     }
 
 
@@ -53,280 +62,168 @@ def fuzzy_inference(stok, penjualan, pendapatan):
 
     # inference min (Rule)
     # Rule 1
-    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 0 <= pendapatan <= 450000:
+    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 0 <= pendapatan <= 200000:
         prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
         jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
     # Rule 2
-    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 50000 <= pendapatan <= 850000:
+    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 150000 <= pendapatan <= 450000:
         prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
         jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
     # Rule 3
-    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 450000 <= pendapatan <= 1250000:
+    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 300000 <= pendapatan <= 1700000:
         prioritas_output['rendah'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
         jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
     # Rule 4
-    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 850000 <= pendapatan <= 1650000:
+    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 0 <= pendapatan <= 200000:
         prioritas_output['rendah'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
+        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
     # Rule 5
-    if 0 <= stok <= 50 and 0 <= penjualan <= 50 and 1250000 <= pendapatan <= 1700000:
+    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 150000 <= pendapatan <= 450000:
         prioritas_output['rendah'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
+        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
     # Rule 6
-    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 0 <= pendapatan <= 450000:
-        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
+    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 300000 <= pendapatan <= 1700000:
+        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
+        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
 
     # Rule 7
-    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 50000 <= pendapatan <= 850000:
-        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
+    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 0 <= pendapatan <= 200000:
+        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
+        jumlah_output['banyak'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
 
     # Rule 8
-    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 450000 <= pendapatan <= 1250000:
-        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
+    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 150000 <= pendapatan <= 450000:
+        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
+        jumlah_output['banyak'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
 
     # Rule 9
-    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 850000 <= pendapatan <= 1650000:
-        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
-        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
+    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 300000 <= pendapatan <= 1700000:
+        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
+        jumlah_output['sangat banyak'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
 
     # Rule 10
-    if 0 <= stok <= 50 and 30 <= penjualan <= 90 and 1250000 <= pendapatan <= 1700000:
-        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['banyak'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
+    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 0 <= pendapatan <= 200000:
+        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
 
     # Rule 11
-    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 0 <= pendapatan <= 450000:
-        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
+    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 150000 <= pendapatan <= 450000:
+        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
 
     # Rule 12
-    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 50000 <= pendapatan <= 850000:
-        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
+    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 300000 <= pendapatan <= 1700000:
+        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
 
     # Rule 13
-    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 450000 <= pendapatan <= 1250000:
-        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
-        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
-
-    # Rule 14
-    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 850000 <= pendapatan <= 1650000:
-        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
-        jumlah_output['banyak'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
-
-    # Rule 15
-    if 0 <= stok <= 50 and 70 <= penjualan <= 120 and 1250000 <= pendapatan <= 1700000:
-        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['sangat banyak'].extend([min(stok_membership(float(stok))['sedikit'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-
-    # Rule 16
-    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 0 <= pendapatan <= 450000:
-        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-
-    # Rule 17
-    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 50000 <= pendapatan <= 850000:
-        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
-
-    # Rule 18
-    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 450000 <= pendapatan <= 1250000:
-        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
-
-    # Rule 19
-    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 850000 <= pendapatan <= 1650000:
-        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
-
-    # Rule 20
-    if 30 <= stok <= 90 and 0 <= penjualan <= 50 and 1250000 <= pendapatan <= 1700000:
-        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-
-    # Rule 21
-    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 0 <= pendapatan <= 450000:
-        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-
-    # Rule 22
-    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 50000 <= pendapatan <= 850000:
+    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 0 <= pendapatan <= 200000:
         prioritas_output['rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
             float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
         jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
+
+    # Rule 14
+    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 150000 <= pendapatan <= 450000:
+        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
+        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
+
+    # Rule 15
+    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 300000 <= pendapatan <= 1700000:
+        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
+        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
+
+    # Rule 16
+    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 0 <= pendapatan <= 200000:
+        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
+        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
+
+    # Rule 17
+    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 150000 <= pendapatan <= 450000:
+        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
+        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
+
+    # Rule 18
+    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 300000 <= pendapatan <= 1700000:
+        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
+        jumlah_output['banyak'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
+
+    # Rule 19
+    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 0 <= pendapatan <= 200000:
+        prioritas_output['sangatrendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
+
+    # Rule 20
+    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 150000 <= pendapatan <= 450000:
+        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
+
+    # Rule 21
+    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 300000 <= pendapatan <= 1700000:
+        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
+
+    # Rule 22
+    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 0 <= pendapatan <= 200000:
+        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
+            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
             float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
         print("Prioritas sebelum:", prioritas_output)
 
     # Rule 23
-    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 450000 <= pendapatan <= 1250000:
-        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 150000 <= pendapatan <= 450000:
+        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
             float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
+        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
             float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
 
     # Rule 24
-    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 850000 <= pendapatan <= 1650000:
-        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
-        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
-
-    # Rule 25
-    if 30 <= stok <= 90 and 30 <= penjualan <= 90 and 1250000 <= pendapatan <= 1700000:
-        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['banyak'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-
-    # Rule 26
-    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 0 <= pendapatan <= 450000:
-        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-
-    # Rule 27
-    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 50000 <= pendapatan <= 850000:
-        prioritas_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['rendah'])])
-
-    # Rule 28
-    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 450000 <= pendapatan <= 1250000:
-        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sedang'])])
-
-    # Rule 29
-    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 850000 <= pendapatan <= 1650000:
-        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
-        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['tinggi'])])
-
-    # Rule 30
-    if 30 <= stok <= 90 and 70 <= penjualan <= 120 and 1250000 <= pendapatan <= 1700000:
-        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['banyak'].extend([min(stok_membership(float(stok))['cukup'], penjualan_membership(
-            float(penjualan))['banyak'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-
-    # Rule 31
-    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 0 <= pendapatan <= 450000:
-        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-
-    # Rule 32
-    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 50000 <= pendapatan <= 850000:
-        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['rendah'])])
-
-    # Rule 33
-    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 450000 <= pendapatan <= 1250000:
-        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sedang'])])
-
-    # Rule 34
-    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 850000 <= pendapatan <= 1650000:
-        prioritas_output['sangat rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['tinggi'])])
-
-    # Rule 35
-    if 70 <= stok <= 120 and 0 <= penjualan <= 50 and 1250000 <= pendapatan <= 1700000:
-        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedikit'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-
-    # Rule 36
-    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 0 <= pendapatan <= 450000:
-        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat rendah'])])
-
-    # Rule 37
-    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 50000 <= pendapatan <= 850000:
-        prioritas_output['rendah'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
-        jumlah_output['sangat sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['rendah'])])
-
-    # Rule 38
-    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 450000 <= pendapatan <= 1250000:
+    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 300000 <= pendapatan <= 1700000:
         prioritas_output['sedang'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
-        jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sedang'])])
-
-    # Rule 39
-    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 850000 <= pendapatan <= 1650000:
-        prioritas_output['tinggi'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
             float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
         jumlah_output['sedikit'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
             float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['tinggi'])])
-
-    # Rule 40
-    if 70 <= stok <= 120 and 30 <= penjualan <= 90 and 1250000 <= pendapatan <= 1700000:
-        prioritas_output['sangat tinggi'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
-        jumlah_output['sedang'].extend([min(stok_membership(float(stok))['banyak'], penjualan_membership(
-            float(penjualan))['sedang'], pendapatan_membership(float(pendapatan))['sangat tinggi'])])
 
     # inference max
     maksimum_sr = max(
@@ -379,8 +276,8 @@ def fuzzy_inference(stok, penjualan, pendapatan):
         'sangat sedikit': [0, 10, 20],
         'sedikit': [15, 32.5, 50],
         'sedang': [40, 57.5, 75],
-        'tinggi': [65, 82.5, 100],
-        'sangat tinggi': [90, 105, 120]
+        'banyak': [65, 82.5, 100],
+        'sangat banyak': [90, 105, 120]
     }
 
     total_sample_prioritas = 0
