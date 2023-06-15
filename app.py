@@ -101,10 +101,10 @@ name, authentication_status, username = authenticator.login("Login", "main")
 # ======================= Akhir Login
 
 if authentication_status == False:
-    st.error("Username/password is incorrect")
+    st.error("Username/password Salah")
 
 if authentication_status == None:
-    st.warning("Please enter your username and password")
+    st.warning("Silahkan Masukan Username Dan Password")
 
 if authentication_status:
     with st.sidebar:
@@ -133,9 +133,9 @@ if authentication_status:
         st.write("Berikut adalah langkah-langkah penggunaan sistem:")
         st.markdown(
             "1. User perlu mengedit data stok pada halaman **Data Masker** setelah melakukan pembelian stok.")
-        st.markdown("2. Untuk mendapatkan rekomendasi, user perlu mengupload data penjualan selama 1 minggu terakhir pada halaman **Upload Data Penjualan** sesuai dengan template yang ada. Dan Pastikan Nama Merek Sama Dengan Yang Ada Pada Halaman Data Masker")
+        st.markdown("2. Untuk mendapatkan hasil prediksi, user perlu mengupload data penjualan selama 1 minggu terakhir pada halaman **Upload Data Penjualan** sesuai dengan template yang ada. Dan Pastikan Nama Merek Sama Dengan Yang Ada Pada Halaman Data Masker")
         st.markdown(
-            "3. Setelah melakukan upload, user dapat masuk ke halaman **Rekomendasi** dan memilih tanggal upload untuk mendapatkan prediksi.")
+            "3. Setelah melakukan upload, user dapat masuk ke halaman **Prediksi** dan memilih tanggal upload untuk mendapatkan prediksi.")
 
     # input data
     if selected == "Upload Data":
