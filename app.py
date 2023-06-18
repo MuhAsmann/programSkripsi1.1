@@ -94,7 +94,7 @@ names = [user["name"] for user in users]
 hashed_passwords = [user["password"] for user in users]
 
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
-                                    "rekomendasi_dashboard", "12345678", cookie_expiry_days=15)
+                                    "rekomendasi_dashboard", "12345678", cookie_expiry_days=2)
 
 name, authentication_status, username = authenticator.login("Login", "main")
 
